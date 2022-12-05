@@ -32,12 +32,10 @@ import { stdin as input } from 'node:process';
             const [unused, quantity, source, destination] = 
                input.match(/^move\s+(\d+)\s+from\s+(\d+)\s+to\s+(\d+)/);
             
-            // Uncomment to get answer for #1
             for(var i=0; i<quantity; i++){
                stacks1[destination-1].unshift(stacks1[source-1].shift());
             }
             
-            // Uncomment to get answer for #2
             var tmp = []
             for(var i=0; i<quantity; i++){
                tmp.push(stacks2[source-1].shift());
