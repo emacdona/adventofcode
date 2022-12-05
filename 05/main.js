@@ -4,6 +4,7 @@ import * as readline from 'node:readline/promises';
 import { stdin as input } from 'node:process';
 
 // Answer 1 based on my input: RFFFWBPNS
+// Answer 2 based on my input: CQQBBJFCS
 (function(context){
    var stacks = [];
 
