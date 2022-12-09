@@ -62,6 +62,40 @@
                                          (lambda (x) `(,i ,(- (- row-count 1) x))))))
     :test #'equal))
 
+
+;; standing at <index> and looking to the beginning of <list>, this returns the list of trees in your line of sight
+;; (whether you can see them or not)
+(defun view-from-tree (index trees)
+   (cdr (reverse (subseq trees 0 (+ index 1)))))
+
+;; for list <l> keeps counting its elements until predicate <pred> returns true
+(defun count-until (l pred)
+  (let ((elt (car l)))
+    (if (or (null elt) (funcall pred elt))
+      0
+      (+ 1 (count-until (cdr l) pred)))))
+
+(defun score-to-front (index trees)
+  (count-until
+    (view-from-tree index trees)
+    (lambda (x) (> x (nth index trees)))))
+
+(defun score (c column-count r row-count grid)
+  (* (score-to-front r 
+                     (column grid c))
+     (score-to-front (- (- row-count 1) r) 
+                     (reverse (column grid c)))
+     (score-to-front c 
+                     (row grid r))
+     (score-to-front (- (- column-count 1) c)
+                     (reverse (row grid r)))))
+
+(defun high-score (grid row-count column-count)
+  (apply #'max 
+         (map 'list 
+              (lambda (x) (score (car x) column-count (cadr x) row-count grid))
+              (all-visible grid row-count column-count))))
+
 ;; The "main" function
 (let* ((grid
          (loop for line = (read-line *standard-input* nil nil)
@@ -90,6 +124,7 @@
            (lambda (x) `(0 ,(- (- row-count 1) x)))))
   |#
 
-  (print (length (all-visible grid row-count col-count))) ;; 1822 too high; guessing: 1500 < x < 1725
+  (print (length (all-visible grid row-count col-count))) ;; Q1: 1698 is answer for my input
+  (print (high-score grid row-count col-count)) ;; 638666 < x < 5527005
 )
 
