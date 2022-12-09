@@ -71,14 +71,14 @@
 ;; for list <l> keeps counting its elements until predicate <pred> returns true
 (defun count-until (l pred)
   (let ((elt (car l)))
-    (if (or (null elt) (funcall pred elt))
-      0
-      (+ 1 (count-until (cdr l) pred)))))
+    (cond ((null elt) 0)
+          ((funcall pred elt) 1)
+          (t (+ 1 (count-until (cdr l) pred))))))
 
 (defun score-to-front (index trees)
   (count-until
     (view-from-tree index trees)
-    (lambda (x) (> x (nth index trees)))))
+    (lambda (x) (>= x (nth index trees)))))
 
 (defun score (c column-count r row-count grid)
   (* (score-to-front r 
@@ -125,6 +125,6 @@
   |#
 
   (print (length (all-visible grid row-count col-count))) ;; Q1: 1698 is answer for my input
-  (print (high-score grid row-count col-count)) ;; 638666 < x < 5527005
+  (print (high-score grid row-count col-count)) ;; Q2: 672280 is answer for my input
 )
 
