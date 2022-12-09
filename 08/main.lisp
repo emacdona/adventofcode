@@ -53,7 +53,7 @@
                                          ;; x varies over columns for fixed row i, but this row is reversed -- so we start with the last column
                                          (lambda (x) `(,(- (- col-count 1) x) ,i))))
             (loop for i from 0 to (- col-count 1)
-                  append (visible-tuples (column grid i t)
+                  append (visible-tuples (column grid i)
                                          ;; x varies over rows for fixed column i
                                          (lambda (x) `(,i ,x))))
             (loop for i from 0 to (- col-count 1)
@@ -71,8 +71,8 @@
        (row-count (length grid))
        (col-count (length (elt grid 0))))
 
-  (print grid)
-  (print (all-visible grid row-count col-count))
+  ;;(print grid)
+  ;;(print (all-visible grid row-count col-count))
 
   #|
   (print grid)
